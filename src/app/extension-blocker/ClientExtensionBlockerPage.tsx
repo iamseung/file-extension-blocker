@@ -14,6 +14,7 @@ type FixedExtensionResponse = {
 };
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+console.log("API_BASE:", API_BASE);
 
 export default function ClientExtensionBlockerPage() {
   const [fixedExtensions, setFixedExtensions] = useState<ExtensionDto[]>([]);
