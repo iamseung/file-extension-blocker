@@ -13,15 +13,16 @@ type FixedExtensionResponse = {
   data: ExtensionDto[];
 };
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export default function ClientExtensionBlockerPage() {
   const [fixedExtensions, setFixedExtensions] = useState<ExtensionDto[]>([]);
   const [customExtensions, setCustomExtensions] = useState<ExtensionDto[]>([]);
   const [customInput, setCustomInput] = useState('');
 
-  // ✅ 고정 확장자 fetch
   const fetchFixedExtensions = async () => {
     try {
-      const res = await fetch('http://localhost:8080/api/blocking/extensions/fixed', {
+      const res = await fetch(`${API_BASE}/api/blocking/extensions/fixed`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -38,10 +39,9 @@ export default function ClientExtensionBlockerPage() {
     }
   };
 
-  // ✅ 커스텀 확장자 fetch
   const fetchCustomExtensions = async () => {
     try {
-      const res = await fetch('http://localhost:8080/api/blocking/extensions/custom', {
+      const res = await fetch(`${API_BASE}/api/blocking/extensions/custom`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -63,10 +63,9 @@ export default function ClientExtensionBlockerPage() {
     fetchCustomExtensions();
   }, []);
 
-  // ✅ 고정 확장자 토글
   const handleToggle = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:8080/api/blocking/extensions/fixed/${id}/toggle`, {
+      const res = await fetch(`${API_BASE}/api/blocking/extensions/fixed/${id}/toggle`, {
         method: 'PATCH',
         credentials: 'include',
       });
@@ -81,49 +80,47 @@ export default function ClientExtensionBlockerPage() {
     }
   };
 
-  // ✅ 커스텀 확장자 추가
   const addCustomExtension = () => {
     const trimmed = customInput.trim();
 
     if (!trimmed) return;
 
     const isDuplicate = customExtensions.some(
-        ext => ext.name.toLowerCase() === trimmed.toLowerCase()
+      ext => ext.name.toLowerCase() === trimmed.toLowerCase()
     );
 
     if (isDuplicate) {
-        alert('동일한 확장자는 이미 추가되어 있습니다.');
-        return;
+      alert('동일한 확장자는 이미 추가되어 있습니다.');
+      return;
     }
 
     if (customExtensions.length >= 200) {
-        alert('최대 200개까지만 추가할 수 있습니다.');
-        return;
+      alert('최대 200개까지만 추가할 수 있습니다.');
+      return;
     }
 
-    fetch('http://localhost:8080/api/blocking/extensions/custom', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
+    fetch(`${API_BASE}/api/blocking/extensions/custom`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
         'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ extensionName: trimmed }),
+      },
+      body: JSON.stringify({ extensionName: trimmed }),
     })
-        .then(res => {
+      .then(res => {
         if (!res.ok) return res.json().then(err => Promise.reject(err));
         return fetchCustomExtensions();
-        })
-        .then(() => setCustomInput(''))
-        .catch(err => {
+      })
+      .then(() => setCustomInput(''))
+      .catch(err => {
         alert(err.message || '커스텀 확장자 추가 실패');
         console.error('커스텀 확장자 추가 실패:', err);
-        });
-    };
+      });
+  };
 
-  // ✅ 커스텀 확장자 삭제
   const removeCustomExtension = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:8080/api/blocking/extensions/custom/${id}`, {
+      const res = await fetch(`${API_BASE}/api/blocking/extensions/custom/${id}`, {
         method: 'DELETE',
         credentials: 'include',
       });
