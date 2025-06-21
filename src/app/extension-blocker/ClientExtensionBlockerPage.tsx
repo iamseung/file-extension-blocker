@@ -22,7 +22,7 @@ export default function ClientExtensionBlockerPage() {
 
   const fetchFixedExtensions = async () => {
     try {
-      const res = await fetch(`${API_BASE}/api/blocking/extensions/fixed`, {
+      const res = await fetch('/api/blocking/extensions/fixed', {
         method: 'GET',
         credentials: 'include',
       });
@@ -41,7 +41,7 @@ export default function ClientExtensionBlockerPage() {
 
   const fetchCustomExtensions = async () => {
     try {
-      const res = await fetch(`${API_BASE}/api/blocking/extensions/custom`, {
+      const res = await fetch('/api/blocking/extensions/custom', {
         method: 'GET',
         credentials: 'include',
       });
@@ -65,7 +65,7 @@ export default function ClientExtensionBlockerPage() {
 
   const handleToggle = async (id: number) => {
     try {
-      const res = await fetch(`${API_BASE}/api/blocking/extensions/fixed/${id}/toggle`, {
+      const res = await fetch(`/api/blocking/extensions/fixed/${id}/toggle`, {
         method: 'PATCH',
         credentials: 'include',
       });
@@ -99,7 +99,7 @@ export default function ClientExtensionBlockerPage() {
       return;
     }
 
-    fetch(`${API_BASE}/api/blocking/extensions/custom`, {
+    fetch('/api/blocking/extensions/custom', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -120,7 +120,7 @@ export default function ClientExtensionBlockerPage() {
 
   const removeCustomExtension = async (id: number) => {
     try {
-      const res = await fetch(`${API_BASE}/api/blocking/extensions/custom/${id}`, {
+      const res = await fetch(`/api/blocking/extensions/custom/${id}`, {
         method: 'DELETE',
         credentials: 'include',
       });
