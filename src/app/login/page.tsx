@@ -2,12 +2,16 @@
 
 import { useState } from 'react';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export default function LoginPage() {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    const res = await fetch('http://localhost:8080/api/users/login/v2', {
+    console.log('✅ API_BASE:', API_BASE);
+    
+    const res = await fetch(`${API_BASE}/api/users/login/v2`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId, password }),
