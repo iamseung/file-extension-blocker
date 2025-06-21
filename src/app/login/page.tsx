@@ -10,8 +10,8 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     console.log('✅ API_BASE:', API_BASE);
-    
-    const res = await fetch(`${API_BASE}/api/users/login/v2`, {
+
+    const res = await fetch('/api/users/login/v2', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId, password }),
